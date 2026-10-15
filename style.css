@@ -325,8 +325,8 @@ body {
 
 /* Authentic Nintendo Cross D-Pad */
 .gb-dpad {
-  width: calc(var(--u) * 9.6);
-  height: calc(var(--u) * 9.6);
+  width: calc(var(--u) * 11.4);
+  height: calc(var(--u) * 11.4);
   position: relative;
   filter: drop-shadow(0 calc(var(--u) * 0.3) calc(var(--u) * 0.45) rgba(0, 0, 0, 0.6));
 }
@@ -336,23 +336,23 @@ body {
   content: '';
   position: absolute;
   top: 0;
-  left: calc(var(--u) * 3.2);
-  width: calc(var(--u) * 3.2);
+  left: calc(var(--u) * 3.8);
+  width: calc(var(--u) * 3.8);
   height: 100%;
   background: var(--gbc-dpad);
-  border-radius: calc(var(--u) * 0.35);
+  border-radius: calc(var(--u) * 0.4);
   pointer-events: none;
 }
 
 .gb-dpad::after {
   content: '';
   position: absolute;
-  top: calc(var(--u) * 3.2);
+  top: calc(var(--u) * 3.8);
   left: 0;
   width: 100%;
-  height: calc(var(--u) * 3.2);
+  height: calc(var(--u) * 3.8);
   background: var(--gbc-dpad);
-  border-radius: calc(var(--u) * 0.35);
+  border-radius: calc(var(--u) * 0.4);
   pointer-events: none;
 }
 
@@ -371,74 +371,74 @@ body {
 
 .dpad-up {
   top: 0;
-  left: calc(var(--u) * 3.2);
-  width: calc(var(--u) * 3.2);
-  height: calc(var(--u) * 3.4);
-  border-radius: calc(var(--u) * 0.35) calc(var(--u) * 0.35) 0 0;
+  left: calc(var(--u) * 3.8);
+  width: calc(var(--u) * 3.8);
+  height: calc(var(--u) * 4.0);
+  border-radius: calc(var(--u) * 0.4) calc(var(--u) * 0.4) 0 0;
 }
 .dpad-up::after {
   content: '▲';
   color: #1a1c22;
-  font-size: calc(var(--u) * 0.85);
-  display: block;
-  text-align: center;
-  line-height: calc(var(--u) * 2.8);
-}
-
-.dpad-down {
-  bottom: 0;
-  left: calc(var(--u) * 3.2);
-  width: calc(var(--u) * 3.2);
-  height: calc(var(--u) * 3.4);
-  border-radius: 0 0 calc(var(--u) * 0.35) calc(var(--u) * 0.35);
-}
-.dpad-down::after {
-  content: '▼';
-  color: #1a1c22;
-  font-size: calc(var(--u) * 0.85);
+  font-size: calc(var(--u) * 1.0);
   display: block;
   text-align: center;
   line-height: calc(var(--u) * 3.4);
 }
 
+.dpad-down {
+  bottom: 0;
+  left: calc(var(--u) * 3.8);
+  width: calc(var(--u) * 3.8);
+  height: calc(var(--u) * 4.0);
+  border-radius: 0 0 calc(var(--u) * 0.4) calc(var(--u) * 0.4);
+}
+.dpad-down::after {
+  content: '▼';
+  color: #1a1c22;
+  font-size: calc(var(--u) * 1.0);
+  display: block;
+  text-align: center;
+  line-height: calc(var(--u) * 4.0);
+}
+
 .dpad-left {
-  top: calc(var(--u) * 3.2);
+  top: calc(var(--u) * 3.8);
   left: 0;
-  width: calc(var(--u) * 3.4);
-  height: calc(var(--u) * 3.2);
-  border-radius: calc(var(--u) * 0.35) 0 0 calc(var(--u) * 0.35);
+  width: calc(var(--u) * 4.0);
+  height: calc(var(--u) * 3.8);
+  border-radius: calc(var(--u) * 0.4) 0 0 calc(var(--u) * 0.4);
 }
 .dpad-left::after {
   content: '◀';
   color: #1a1c22;
-  font-size: calc(var(--u) * 0.85);
+  font-size: calc(var(--u) * 1.0);
   display: block;
   text-align: center;
-  line-height: calc(var(--u) * 3.1);
+  line-height: calc(var(--u) * 3.7);
 }
 
 .dpad-right {
-  top: calc(var(--u) * 3.2);
+  top: calc(var(--u) * 3.8);
   right: 0;
-  width: calc(var(--u) * 3.4);
-  height: calc(var(--u) * 3.2);
-  border-radius: 0 calc(var(--u) * 0.35) calc(var(--u) * 0.35) 0;
+  width: calc(var(--u) * 4.0);
+  height: calc(var(--u) * 3.8);
+  border-radius: 0 calc(var(--u) * 0.4) calc(var(--u) * 0.4) 0;
 }
 .dpad-right::after {
   content: '▶';
   color: #1a1c22;
-  font-size: calc(var(--u) * 0.85);
+  font-size: calc(var(--u) * 1.0);
   display: block;
   text-align: center;
-  line-height: calc(var(--u) * 3.1);
+  line-height: calc(var(--u) * 3.7);
 }
 
 .dpad-center {
   position: absolute;
-  top: calc(var(--u) * 3.1);
-  left: calc(var(--u) * 3.1);
-  width: calc(var(--u) * 3.4);
-  height: calc(var(--u) * 3.4);
+  top: calc(var(--u) * 3.7);
+  left: calc(var(--u) * 3.7);
+  width: calc(var(--u) * 4.0);
+  height: calc(var(--u) * 4.0);
   background: var(--gbc-dpad);
   pointer-events: none;
   z-index: 2;
@@ -446,10 +446,10 @@ body {
 .dpad-center::after {
   content: '';
   position: absolute;
-  top: calc(var(--u) * 0.8);
-  left: calc(var(--u) * 0.8);
-  width: calc(var(--u) * 1.8);
-  height: calc(var(--u) * 1.8);
+  top: calc(var(--u) * 0.95);
+  left: calc(var(--u) * 0.95);
+  width: calc(var(--u) * 2.1);
+  height: calc(var(--u) * 2.1);
   border-radius: 50%;
   background: #20222a;
 }
