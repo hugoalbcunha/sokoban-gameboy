@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sokoban 8-Bit — Game Boy Color Edition</title>
+  <!-- 8-Bit Pixel Font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Phaser 3 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+  <div class="gb-wrapper">
+    <!-- Game Boy Handheld Housing -->
+    <div class="gb-console">
+      <!-- Side Reset Switch (Estilo Game Boy) -->
+      <div class="gb-side-switch-mount" title="Chave Reset (Tecla R)">
+        <button id="btn-reset" class="gb-side-slider" aria-label="Reset">
+          <span class="slider-notch"></span>
+          <span class="slider-notch"></span>
+          <span class="slider-notch"></span>
+        </button>
+        <span class="switch-tag-reset" id="label-reset" aria-label="RESET">
+          <span>R</span>
+          <span>E</span>
+          <span>S</span>
+          <span>E</span>
+          <span>T</span>
+        </span>
+      </div>
+
+      <!-- Top speaker / brand header -->
+      <div class="gb-header">
+        <div class="gb-brand">
+          <span class="brand-text">SOKOBAN</span>
+          <span class="color-text">
+            <span class="c-c">C</span><span class="c-o">O</span><span class="c-l">L</span><span class="c-o2">O</span><span class="c-r">R</span>
+          </span>
+        </div>
+        <div class="gb-power-led" title="LED Indicador">
+          <span class="led-light"></span>
+        </div>
+      </div>
+
+      <!-- Screen Frame -->
+      <div class="gb-screen-bezel">
+        <div class="gb-screen-header">
+          <span class="screen-indicator" id="screen-badge">GBC 8-BIT</span>
+          <div class="header-buttons">
+            <button id="btn-color-mode" class="gb-screen-btn btn-color-active" title="Alternar Paleta (Color / Game Boy Clássico)">🎨 COLOR: ON</button>
+            <button id="btn-sound" class="gb-screen-btn" title="Som">🔊 CHIP</button>
+          </div>
+        </div>
+
+        <!-- HUD inside Screen -->
+        <div id="game-hud" class="gb-hud hidden">
+          <div class="hud-item">
+            <span class="hud-lbl">LV</span>
+            <span id="stat-level" class="hud-val">1/6</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-lbl">PASSO</span>
+            <span id="stat-moves" class="hud-val">000</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-lbl">EMPUR</span>
+            <span id="stat-pushes" class="hud-val">000</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-lbl">ALVO</span>
+            <span id="stat-targets" class="hud-val">0/0</span>
+          </div>
+        </div>
+
+        <!-- Phaser Mount (LCD Screen) -->
+        <div class="gb-lcd-screen">
+          <div id="phaser-mount"></div>
+          <div class="gb-scanlines"></div>
+        </div>
+      </div>
+
+      <!-- Controls Area -->
+      <div class="gb-controls-area">
+        <!-- Directional Pad (Cross) -->
+        <div class="gb-dpad">
+          <button class="dpad-dir dpad-up" data-dir="up" aria-label="Cima"></button>
+          <button class="dpad-dir dpad-right" data-dir="right" aria-label="Direita"></button>
+          <button class="dpad-dir dpad-down" data-dir="down" aria-label="Baixo"></button>
+          <button class="dpad-dir dpad-left" data-dir="left" aria-label="Esquerda"></button>
+          <div class="dpad-center"></div>
+        </div>
+
+        <!-- A and B Action Buttons -->
+        <div class="gb-action-buttons">
+          <div class="action-btn-wrapper wrapper-b">
+            <button id="btn-undo" class="gb-round-btn btn-b" title="Voltar / Desfazer (Backspace ou B)">B</button>
+            <span class="btn-label">VOLTAR</span>
+          </div>
+          <div class="action-btn-wrapper wrapper-a">
+            <button id="btn-confirm" class="gb-round-btn btn-a" title="Confirmar (Enter ou A)">A</button>
+            <span class="btn-label">CONFIRMAR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Select / Start Buttons -->
+      <div class="gb-meta-buttons">
+        <div class="meta-btn-wrapper">
+          <button id="btn-level-select" class="gb-pill-btn" title="Selecionar Fases">SELECT</button>
+          <span class="meta-label">FASES</span>
+        </div>
+        <div class="meta-btn-wrapper">
+          <button id="btn-info" class="gb-pill-btn" title="Ajuda e Instruções">START</button>
+          <span class="meta-label">AJUDA</span>
+        </div>
+      </div>
+
+      <!-- Speaker Grille -->
+      <div class="gb-speaker-grille">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Keyboard guide for desktop -->
+    <div class="desktop-guide">
+      <p>⌨️ Teclado: <strong>Setas</strong>: Mover | <strong>Enter</strong>: Confirmar | <strong>Backspace</strong>: Voltar | <strong>R</strong>: Reset</p>
+    </div>
+  </div>
+
+  <!-- Level Selection Modal -->
+  <div id="modal-level-select" class="modal-overlay hidden">
+    <div class="retro-modal-card">
+      <h2 class="retro-title">-- FASES --</h2>
+      <div id="level-grid" class="retro-level-grid"></div>
+      <button id="btn-close-levels" class="retro-btn">VOLTAR</button>
+    </div>
+  </div>
+
+  <!-- Help / Info Modal -->
+  <div id="modal-info" class="modal-overlay hidden">
+    <div class="retro-modal-card">
+      <h2 class="retro-title">COMO JOGAR</h2>
+      <p class="retro-text">EMPURRE TODAS AS CAIXAS ATE OS ALVOS COM PONTO.</p>
+      <p class="retro-text">VOCE SO PODE EMPURRAR UMA CAIXA POR VEZ.</p>
+      <p class="retro-text">USE O BOTAO B PARA DESFAZER JOGADAS ERRADAS!</p>
+      <button id="btn-close-info" class="retro-btn">OK</button>
+    </div>
+  </div>
+
+  <!-- Game Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

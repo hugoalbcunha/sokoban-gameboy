@@ -1,0 +1,808 @@
+:root {
+  /* Game Boy Color Shell Colors (Iconic GBC Teal/Turquoise) */
+  --gbc-body: #1aa29a;
+  --gbc-body-dark: #127973;
+  --gbc-body-highlight: #28cfc4;
+  --gbc-bezel: #252b3b;
+  --gbc-screen-bg: #0b0f0b;
+  --gbc-hud-bg: #141720;
+  --gbc-hud-border: #232938;
+  --gbc-hud-val: #4ade80;
+  --gbc-hud-lbl: #9ca3af;
+  --gbc-dpad: #2c2f38;
+  --gbc-dpad-dark: #1a1c22;
+  --gbc-btn-ab: #9a205a;
+  --gbc-btn-ab-dark: #6e133e;
+  --gbc-meta: #5c6475;
+  --gbc-brand-color: #0b4541;
+  --font-pixel: 'Press Start 2P', monospace;
+
+  /* Escala dinâmica para ocupar a altura da janela (~91-92% da altura) com limites suaves */
+  --u: clamp(6.5px, min(1.44vh, calc(90vw / 38)), 16.5px);
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --u: clamp(6.5px, min(1.44dvh, calc(90vw / 38)), 16.5px);
+  }
+}
+
+/* Classic Game Boy (DMG-01) 4-Shade Monochromatic Olive Green Theme */
+.dmg-mode {
+  --gbc-body: #c8c5be;
+  --gbc-body-dark: #adaaa2;
+  --gbc-body-highlight: #dedcd7;
+  --gbc-bezel: #606873;
+  --gbc-screen-bg: #8bac0f;
+  --gbc-hud-bg: #8bac0f;
+  --gbc-hud-border: #306230;
+  --gbc-hud-val: #0f380f;
+  --gbc-hud-lbl: #306230;
+  --gbc-dpad: #2b2e36;
+  --gbc-dpad-dark: #18191e;
+  --gbc-btn-ab: #8f1947;
+  --gbc-btn-ab-dark: #660f31;
+  --gbc-meta: #787d8a;
+  --gbc-brand-color: #212852;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: radial-gradient(circle at 50% 30%, #1e2230 0%, #0d0f17 100%);
+  color: #fff;
+  font-family: var(--font-pixel);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gb-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@supports (max-height: 100dvh) {
+  .gb-wrapper {
+    max-height: 100dvh;
+  }
+}
+
+/* Handheld Console Casing */
+.gb-console {
+  background: linear-gradient(145deg, var(--gbc-body-highlight) 0%, var(--gbc-body) 30%, var(--gbc-body-dark) 100%);
+  width: calc(var(--u) * 38);
+  max-width: 92vw;
+  border-radius: calc(var(--u) * 1.8) calc(var(--u) * 1.8) calc(var(--u) * 5.4) calc(var(--u) * 1.8);
+  padding: calc(var(--u) * 0.9) calc(var(--u) * 1.3) calc(var(--u) * 1.3);
+  box-shadow: 
+    0 calc(var(--u) * 1.2) calc(var(--u) * 2.8) rgba(0, 0, 0, 0.6),
+    inset 0 calc(var(--u) * 0.2) calc(var(--u) * 0.3) rgba(255, 255, 255, 0.4),
+    inset 0 calc(var(--u) * -0.5) calc(var(--u) * 1) rgba(0, 0, 0, 0.4);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.7);
+  transition: background 0.25s ease;
+}
+
+/* Console Top Header */
+.gb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calc(var(--u) * 0.3);
+}
+
+.gb-brand {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 0.5);
+}
+
+.brand-text {
+  font-size: calc(var(--u) * 1.15);
+  font-weight: 900;
+  color: var(--gbc-brand-color);
+  letter-spacing: calc(var(--u) * 0.08);
+}
+
+.color-text {
+  font-size: calc(var(--u) * 0.95);
+  font-weight: 900;
+  letter-spacing: calc(var(--u) * 0.08);
+}
+.c-c { color: #f43f5e; }
+.c-o { color: #eab308; }
+.c-l { color: #22c55e; }
+.c-o2 { color: #06b6d4; }
+.c-r { color: #8b5cf6; }
+
+.dmg-mode .color-text {
+  display: none;
+}
+
+.dmg-mode .brand-text::after {
+  content: " DMG-01";
+  font-size: calc(var(--u) * 0.85);
+  color: #555b7a;
+}
+
+.gb-power-led {
+  display: flex;
+  align-items: center;
+}
+
+.led-light {
+  width: calc(var(--u) * 0.8);
+  height: calc(var(--u) * 0.8);
+  background-color: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 calc(var(--u) * 0.7) #ef4444, inset 0 1px 2px #fca5a5;
+  display: inline-block;
+}
+
+/* Screen Bezel */
+.gb-screen-bezel {
+  background-color: var(--gbc-bezel);
+  border-radius: calc(var(--u) * 1.1) calc(var(--u) * 1.1) calc(var(--u) * 2.8) calc(var(--u) * 1.1);
+  padding: calc(var(--u) * 0.7) calc(var(--u) * 0.9) calc(var(--u) * 0.9);
+  box-shadow: 
+    inset 0 calc(var(--u) * 0.35) calc(var(--u) * 0.7) rgba(0, 0, 0, 0.8),
+    0 calc(var(--u) * 0.2) calc(var(--u) * 0.3) rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.5);
+  transition: background-color 0.25s ease;
+}
+
+.gb-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: calc(var(--u) * 0.65);
+  color: #9ca3af;
+  min-height: calc(var(--u) * 1.9);
+  gap: calc(var(--u) * 0.4);
+}
+
+.screen-indicator {
+  letter-spacing: calc(var(--u) * 0.05);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 0.45);
+  flex-shrink: 0;
+}
+
+.gb-screen-btn {
+  background: #141720;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  font-family: var(--font-pixel);
+  font-size: calc(var(--u) * 0.62);
+  padding: calc(var(--u) * 0.22) calc(var(--u) * 0.45);
+  border-radius: calc(var(--u) * 0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.1s ease;
+}
+
+.gb-screen-btn:hover {
+  border-color: #f59e0b;
+}
+
+.gb-screen-btn:active {
+  transform: scale(0.94);
+}
+
+.btn-color-active {
+  background: #1e293b;
+  border-color: #22c55e;
+  color: #4ade80;
+}
+
+.dmg-mode .btn-color-active {
+  background: #306230;
+  border-color: #0f380f;
+  color: #9bbc0f;
+}
+
+/* HUD inside Bezel */
+.gb-hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--gbc-hud-bg);
+  border-radius: calc(var(--u) * 0.5);
+  padding: calc(var(--u) * 0.35) calc(var(--u) * 0.2);
+  border: 1px solid var(--gbc-hud-border);
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.gb-hud.hidden {
+  display: none !important;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 0.15);
+}
+
+.hud-lbl {
+  font-size: calc(var(--u) * 0.58);
+  color: var(--gbc-hud-lbl);
+  letter-spacing: 0.5px;
+}
+
+.hud-val {
+  font-size: calc(var(--u) * 0.82);
+  color: var(--gbc-hud-val);
+  text-shadow: 0 0 calc(var(--u) * 0.35) rgba(74, 222, 128, 0.4);
+}
+
+.dmg-mode .hud-val {
+  text-shadow: none;
+}
+
+/* LCD Screen Container */
+.gb-lcd-screen {
+  position: relative;
+  background-color: var(--gbc-screen-bg);
+  border-radius: calc(var(--u) * 0.55);
+  overflow: hidden;
+  box-shadow: inset 0 0 calc(var(--u) * 0.9) rgba(0, 0, 0, 0.9);
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  transition: background-color 0.25s ease, filter 0.15s ease;
+}
+
+#phaser-mount {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#phaser-mount canvas {
+  width: 100% !important;
+  height: 100% !important;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}
+
+/* Scanlines retro effect */
+.gb-scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 3px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.65;
+}
+
+/* Controls Area */
+.gb-controls-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: calc(var(--u) * 0.15) calc(var(--u) * 0.5) 0;
+}
+
+/* Authentic Nintendo Cross D-Pad */
+.gb-dpad {
+  width: calc(var(--u) * 9.6);
+  height: calc(var(--u) * 9.6);
+  position: relative;
+  filter: drop-shadow(0 calc(var(--u) * 0.3) calc(var(--u) * 0.45) rgba(0, 0, 0, 0.6));
+}
+
+/* Base sólida em cruz para garantir continuidade total sem nenhum vão */
+.gb-dpad::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(var(--u) * 3.2);
+  width: calc(var(--u) * 3.2);
+  height: 100%;
+  background: var(--gbc-dpad);
+  border-radius: calc(var(--u) * 0.35);
+  pointer-events: none;
+}
+
+.gb-dpad::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--u) * 3.2);
+  left: 0;
+  width: 100%;
+  height: calc(var(--u) * 3.2);
+  background: var(--gbc-dpad);
+  border-radius: calc(var(--u) * 0.35);
+  pointer-events: none;
+}
+
+.dpad-dir {
+  position: absolute;
+  background: var(--gbc-dpad);
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 1;
+}
+
+.dpad-dir:active {
+  background: var(--gbc-dpad-dark);
+}
+
+.dpad-up {
+  top: 0;
+  left: calc(var(--u) * 3.2);
+  width: calc(var(--u) * 3.2);
+  height: calc(var(--u) * 3.4);
+  border-radius: calc(var(--u) * 0.35) calc(var(--u) * 0.35) 0 0;
+}
+.dpad-up::after {
+  content: '▲';
+  color: #1a1c22;
+  font-size: calc(var(--u) * 0.85);
+  display: block;
+  text-align: center;
+  line-height: calc(var(--u) * 2.8);
+}
+
+.dpad-down {
+  bottom: 0;
+  left: calc(var(--u) * 3.2);
+  width: calc(var(--u) * 3.2);
+  height: calc(var(--u) * 3.4);
+  border-radius: 0 0 calc(var(--u) * 0.35) calc(var(--u) * 0.35);
+}
+.dpad-down::after {
+  content: '▼';
+  color: #1a1c22;
+  font-size: calc(var(--u) * 0.85);
+  display: block;
+  text-align: center;
+  line-height: calc(var(--u) * 3.4);
+}
+
+.dpad-left {
+  top: calc(var(--u) * 3.2);
+  left: 0;
+  width: calc(var(--u) * 3.4);
+  height: calc(var(--u) * 3.2);
+  border-radius: calc(var(--u) * 0.35) 0 0 calc(var(--u) * 0.35);
+}
+.dpad-left::after {
+  content: '◀';
+  color: #1a1c22;
+  font-size: calc(var(--u) * 0.85);
+  display: block;
+  text-align: center;
+  line-height: calc(var(--u) * 3.1);
+}
+
+.dpad-right {
+  top: calc(var(--u) * 3.2);
+  right: 0;
+  width: calc(var(--u) * 3.4);
+  height: calc(var(--u) * 3.2);
+  border-radius: 0 calc(var(--u) * 0.35) calc(var(--u) * 0.35) 0;
+}
+.dpad-right::after {
+  content: '▶';
+  color: #1a1c22;
+  font-size: calc(var(--u) * 0.85);
+  display: block;
+  text-align: center;
+  line-height: calc(var(--u) * 3.1);
+}
+
+.dpad-center {
+  position: absolute;
+  top: calc(var(--u) * 3.1);
+  left: calc(var(--u) * 3.1);
+  width: calc(var(--u) * 3.4);
+  height: calc(var(--u) * 3.4);
+  background: var(--gbc-dpad);
+  pointer-events: none;
+  z-index: 2;
+}
+.dpad-center::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--u) * 0.8);
+  left: calc(var(--u) * 0.8);
+  width: calc(var(--u) * 1.8);
+  height: calc(var(--u) * 1.8);
+  border-radius: 50%;
+  background: #20222a;
+}
+
+/* Action Buttons (A / B) angled authentically without text clipping */
+.gb-action-buttons {
+  display: flex;
+  gap: calc(var(--u) * 1.4);
+  align-items: flex-start;
+  margin-top: calc(var(--u) * 0.2);
+}
+
+.action-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 0.45);
+  min-width: calc(var(--u) * 5.4);
+}
+
+/* Stagger Button B and Button A to create the iconic diagonal Game Boy angle */
+.action-btn-wrapper.wrapper-b {
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.action-btn-wrapper.wrapper-a {
+  margin-top: 0px;
+}
+
+.gb-round-btn {
+  width: calc(var(--u) * 4.1);
+  height: calc(var(--u) * 4.1);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b92b6e 0%, var(--gbc-btn-ab) 60%, var(--gbc-btn-ab-dark) 100%);
+  border: none;
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: calc(var(--u) * 1.25);
+  cursor: pointer;
+  box-shadow: 
+    0 calc(var(--u) * 0.3) calc(var(--u) * 0.6) rgba(0, 0, 0, 0.6),
+    inset 0 calc(var(--u) * 0.18) calc(var(--u) * 0.25) rgba(255, 255, 255, 0.4);
+  touch-action: manipulation;
+  transition: transform 0.08s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gb-round-btn:active {
+  transform: translateY(calc(var(--u) * 0.2));
+  box-shadow: 0 calc(var(--u) * 0.1) calc(var(--u) * 0.25) rgba(0, 0, 0, 0.6);
+}
+
+.btn-label {
+  font-size: calc(var(--u) * 0.65);
+  color: var(--gbc-brand-color);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Side Reset Switch (Estilo Game Boy Color) */
+.gb-side-switch-mount {
+  position: absolute;
+  left: calc(var(--u) * -1.2);
+  top: calc(var(--u) * 7.5);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--u) * 0.4);
+  z-index: 60;
+  user-select: none;
+  cursor: pointer;
+}
+
+.switch-tag-reset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 0.18);
+  font-size: calc(var(--u) * 0.62);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gbc-brand-color);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.switch-tag-reset span {
+  display: block;
+  text-align: center;
+}
+
+.gb-side-slider {
+  width: calc(var(--u) * 1.35);
+  height: calc(var(--u) * 3.6);
+  background: linear-gradient(to right, #6b7280 0%, #374151 40%, #1f2937 100%);
+  border: 1px solid #111827;
+  border-radius: calc(var(--u) * 0.35) 0 0 calc(var(--u) * 0.35);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--u) * 0.35);
+  box-shadow: 
+    calc(var(--u) * -0.2) calc(var(--u) * 0.2) calc(var(--u) * 0.45) rgba(0, 0, 0, 0.5),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.35);
+  transition: transform 0.08s ease, filter 0.1s ease;
+  touch-action: manipulation;
+  padding: 0;
+}
+
+.gb-side-slider:hover {
+  filter: brightness(1.2);
+}
+
+.gb-side-slider:active {
+  transform: translateX(calc(var(--u) * 0.2));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.slider-notch {
+  width: calc(var(--u) * 0.65);
+  height: calc(var(--u) * 0.22);
+  background: #111827;
+  border-radius: 1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.dmg-mode .gb-side-slider {
+  background: linear-gradient(to right, #9ca3af 0%, #4b5563 50%, #374151 100%);
+}
+
+/* Select & Start Pill Buttons */
+.gb-meta-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--u) * 2.8);
+  margin-top: calc(var(--u) * 0.4);
+}
+
+.meta-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 0.4);
+  min-width: calc(var(--u) * 4.6);
+}
+
+.gb-pill-btn {
+  width: calc(var(--u) * 4);
+  height: calc(var(--u) * 1.05);
+  background: var(--gbc-meta);
+  border-radius: calc(var(--u) * 0.55);
+  border: none;
+  cursor: pointer;
+  transform: rotate(-25deg);
+  box-shadow: 0 calc(var(--u) * 0.2) calc(var(--u) * 0.4) rgba(0, 0, 0, 0.4);
+  font-size: 0;
+  transition: background 0.1s ease, transform 0.1s ease;
+}
+
+.gb-pill-btn:active {
+  background: #414754;
+  transform: rotate(-25deg) translateY(calc(var(--u) * 0.2));
+}
+
+.meta-label {
+  font-size: calc(var(--u) * 0.65);
+  color: var(--gbc-brand-color);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  text-align: center;
+  margin-top: calc(var(--u) * 0.35);
+}
+
+/* Speaker Grille */
+.gb-speaker-grille {
+  align-self: flex-end;
+  display: flex;
+  gap: calc(var(--u) * 0.32);
+  transform: rotate(-25deg);
+  margin-right: calc(var(--u) * 0.9);
+}
+
+.gb-speaker-grille span {
+  width: calc(var(--u) * 0.34);
+  height: calc(var(--u) * 2.1);
+  background-color: var(--gbc-brand-color);
+  border-radius: calc(var(--u) * 0.2);
+  box-shadow: inset 0 calc(var(--u) * 0.2) calc(var(--u) * 0.3) rgba(0, 0, 0, 0.6);
+}
+
+/* Desktop keyboard instructions */
+.desktop-guide {
+  text-align: center;
+  font-size: calc(var(--u) * 0.65);
+  color: #9ca3af;
+  line-height: 1.4;
+  margin-top: calc(var(--u) * 0.4);
+  white-space: normal;
+  max-width: calc(var(--u) * 38);
+}
+
+.desktop-guide strong {
+  color: #fcd34d;
+}
+
+/* Retro Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.retro-modal-card {
+  background: #141720;
+  border: calc(var(--u) * 0.3) solid #4ade80;
+  box-shadow: 0 0 calc(var(--u) * 1.5) rgba(74, 222, 128, 0.4);
+  border-radius: calc(var(--u) * 0.7);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 1.4);
+  width: 100%;
+  max-width: min(calc(var(--u) * 34), 90vw);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1);
+}
+
+.dmg-mode-active .retro-modal-card {
+  background: #8bac0f;
+  border-color: #0f380f;
+  box-shadow: none;
+}
+.dmg-mode-active .retro-title,
+.dmg-mode-active .retro-text,
+.dmg-mode-active .retro-trophy {
+  color: #0f380f;
+}
+
+.retro-title {
+  font-size: calc(var(--u) * 1.05);
+  color: #4ade80;
+  letter-spacing: 1px;
+}
+
+.retro-text {
+  font-size: calc(var(--u) * 0.78);
+  color: #e5e7eb;
+  line-height: 1.7;
+}
+
+.retro-level-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 0.7);
+  margin: calc(var(--u) * 0.7) 0;
+}
+
+.retro-level-btn {
+  background: #252b3b;
+  border: calc(var(--u) * 0.18) solid #374151;
+  color: #e5e7eb;
+  font-family: var(--font-pixel);
+  font-size: calc(var(--u) * 0.88);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 0.35);
+  cursor: pointer;
+}
+
+.dmg-mode-active .retro-level-btn {
+  background: #306230;
+  border-color: #0f380f;
+  color: #9bbc0f;
+}
+
+.retro-level-btn:hover {
+  background: #4ade80;
+  color: #111;
+  border-color: #4ade80;
+}
+
+.retro-level-btn.active {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.retro-level-btn.locked {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.retro-btn {
+  background: #252b3b;
+  border: calc(var(--u) * 0.18) solid #e5e7eb;
+  color: #e5e7eb;
+  font-family: var(--font-pixel);
+  font-size: calc(var(--u) * 0.82);
+  padding: calc(var(--u) * 0.8);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.dmg-mode-active .retro-btn {
+  background: #306230;
+  border-color: #0f380f;
+  color: #9bbc0f;
+}
+
+.retro-btn:hover {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.btn-highlight {
+  background: #4ade80;
+  color: #111;
+  border-color: #4ade80;
+}
+
+.btn-highlight:hover {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.retro-trophy {
+  font-size: 11px;
+  color: #fcd34d;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.3; }
+}
+
+.retro-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
